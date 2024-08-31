@@ -17,8 +17,8 @@ print(f'mediana 1: {np.median(data)}')
 print("Média 2: ", media_2)
 print(f'mediana 2: {np.median(data_2)}')
 
-percentil1 = np.percentile(data, [ 25, 75 ])
-percentil2 = np.percentile(data_2, [ 25, 75 ])
+percentil1 = np.percentile(data, [ 25, 50, 75 ])
+percentil2 = np.percentile(data_2, [ 25, 50, 75 ])
 print("Quartil 1 e 3 do data", percentil1)
 print("Quartil 1 e 3 do data_2", percentil2)
 
@@ -27,3 +27,9 @@ print(st.multimode(data_2))
 
 print('amplitude: ', data.ptp())
 print('amplitude2: ', data_2.ptp())
+
+print('variancia data: ', data.var(ddof=1)) # amostra
+print('variancia data_2: ', data.var(ddof=0))
+
+print('variancia2 data_2: ', data_2.var(ddof=1)) # população
+print('variancia2 data_2: ', data_2.var(ddof=0))

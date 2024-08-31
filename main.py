@@ -33,3 +33,5 @@ print('variancia data_2: ', data.var(ddof=0))
 
 print('variancia2 data_2: ', data_2.var(ddof=1)) # população
 print('variancia2 data_2: ', data_2.var(ddof=0))
+
+print('desvio padrão', data.std(ddof=1))

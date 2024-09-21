@@ -110,6 +110,7 @@ def show_csv_statistics(csv: pd.DataFrame, csv_name: str, ignored_columns: list)
 # y = IRIS['SepalWidthCm']
 
 # # Distribuição assimétrica
+# nesse caso é o statistics
 # print(scipy.stats.spearmanr(x, y))
 
 
@@ -134,18 +135,30 @@ def show_csv_statistics(csv: pd.DataFrame, csv_name: str, ignored_columns: list)
 #         sns.scatterplot(x=x, y=y)
         
 #         plt.show()
-def show_graph(index):
+    
+
+# def show_graph(index):
+#     species = pd.unique(IRIS['Species']).tolist()
+#     print(f'Species == {species[index]}')
+    
+#     filtered_csv = IRIS.loc[IRIS['Species'] == species[index]]
+#     x = filtered_csv['SepalLengthCm']
+#     y = filtered_csv['SepalWidthCm']
+
+#     Dispersão
+#     scipy.stats.spearmanr(x, y)
+#     sns.scatterplot(x=x, y=y)
+    
+#     plt.show()
+
+
+# show_graph(0)
+    
+
+def getSpeciesInfo(index):
     species = pd.unique(IRIS['Species']).tolist()
     print(f'Species == {species[index]}')
-    
+
     filtered_csv = IRIS.loc[IRIS['Species'] == species[index]]
     x = filtered_csv['SepalLengthCm']
     y = filtered_csv['SepalWidthCm']
-    
-    scipy.stats.spearmanr(x, y)
-    sns.scatterplot(x=x, y=y)
-    
-    plt.show()
-
-
-show_graph(2)

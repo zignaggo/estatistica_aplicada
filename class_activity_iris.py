@@ -1,8 +1,8 @@
+import scipy.stats
 import statistics as st
 import pandas as pd
 import numpy as np
 import seaborn as sns
-import scipy.stats
 import matplotlib.pyplot as plt
 
 
@@ -10,26 +10,46 @@ IRIS = pd.read_csv('./data/iris.csv')
 STOCK = pd.read_csv('./data/stock_data.csv')
 LIMIT = 0.05
 
+
 def get_unique_column_values(column):
     return pd.unique(IRIS[column]).tolist()
+
 
 def get_species_info(index):
     species = get_unique_column_values('Species')
     filtered_csv = pd.DataFrame(IRIS.loc[IRIS['Species'] == species[index]])
     return filtered_csv
 
+
 def get_species_means():
     means = []
     species = get_unique_column_values('Species')
     for index, specie in enumerate(species):
         petal_length_cm = get_species_info(index)['PetalLengthCm'].tolist()
-        means.append({specie: np.array(petal_length_cm).mean()})
+        mean = np.array(petal_length_cm).mean()
+        means.append([specie, mean])
     return means
 
-# Qual espécie tem maior comprmento de pétala:
-# print(get_species_means())
-# Colocar a medida: Centimetros
 
+# 1) Qual espécie de íris (Setosaa, Versicolor, Virginica) tem maior média comprimento de pétala:
+"""
+species_means = get_species_means()
+for specie_mean in species_means:
+    print(f"{specie_mean[0]}: {specie_mean[1]:.2f} cm")
+"""
+"""
+Result
+Iris-setosa: 1.46 cm
+Iris-versicolor: 4.26 cm
+Iris-virginica: 5.55 cm
+
+Virginica é 30% maior em média de comprimento da pétala do que a Versicolor.
+Virginica é quase 4 vezes maior que a média do comprimento da pétala de Setosa.
+Versicolor é quase 3 vezes maior que a média do comprimento da pétala de Setosa.
+"""
+
+
+# 2) Qual a correlação entre o comprimento da sépala e comprimento da pétala?
 def dispersal_length():
     species = get_unique_column_values('Species')
     for index, specie in enumerate(species):
@@ -52,29 +72,12 @@ def dispersal_length():
             print('Esse pode ser simétrico')
             # se pelo menos um dos dados for assimetrico será utilizado o spearmanr
             dispersal_index =  scipy.stats.pearsonr(sepal, petal)
-        
+
         # mais próximo do 0 --> mais disperso --> menor correlacao --> colunas mais independentes
-        # Mais proximo do 1 --> menos disperso --> maior correlacao -->  
+        # Mais proximo do 1 --> menos disperso --> maior correlacao -->
         print('Indice de dispersão da correlação dos dados: ', dispersal_index.statistic)
         print(30*'-'+'\n')
         sns.scatterplot(data=IRIS, x=sepal, y=petal)
         plt.show()
 
-#  dispersal_length()
-# Pvalue sepal:  0.4595010578632355
-# Pvalue petal:  0.054648224264383316
-# Esse pode ser simétrico
-# Indice de dispersão da correlação dos dados:  0.26387409291868696
-# ------------------------------
-
-# Pvalue sepal:  0.4647378921508789
-# Pvalue petal:  0.1584763377904892
-# Esse pode ser simétrico
-# Indice de dispersão da correlação dos dados:  0.7540489585920164
-# ------------------------------
-
-# Pvalue sepal:  0.25831347703933716
-# Pvalue petal:  0.10977503657341003
-# Esse pode ser simétrico
-# Indice de dispersão da correlação dos dados:  0.8642247329355762
-# ------------------------------
+dispersal_length()

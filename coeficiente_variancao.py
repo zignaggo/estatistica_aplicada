@@ -21,7 +21,7 @@ print(f'mediana 2: {np.median(asyncr1)}')
 # Distribuição assimetrica a direita
 # Nesse caso a média vai ser maior que a mediana
 # O valor da média é arrastado pela cauda, nesse caso, valores a direita, maiores valores, maior média
-# plt.box(asyncr1, 5, (65, 95))
+# plt.hist(asyncr1, 5, (65, 95))
 # plt.show()
 
 
@@ -34,8 +34,3 @@ print(f'mediana 2: {np.median(asyncr1)}')
 sns.boxplot([sync1, asyncr1])
 plt.xticks([0, 1], ['Sync', 'Async'])
 plt.show()
-
-def getBin(min, max):
-    diff = max - min 
-    print(diff)
-

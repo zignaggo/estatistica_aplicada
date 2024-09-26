@@ -15,7 +15,7 @@ def get_unique_column_values(column):
     return pd.unique(IRIS[column]).tolist()
 
 
-def get_species_info(index):
+def get_data_by_specie(index):
     species = get_unique_column_values('Species')
     filtered_csv = pd.DataFrame(IRIS.loc[IRIS['Species'] == species[index]])
     return filtered_csv
@@ -25,7 +25,7 @@ def get_species_means():
     means = []
     species = get_unique_column_values('Species')
     for index, specie in enumerate(species):
-        petal_length_cm = get_species_info(index)['PetalLengthCm'].tolist()
+        petal_length_cm = get_data_by_specie(index)['PetalLengthCm'].tolist()
         mean = np.array(petal_length_cm).mean()
         means.append([specie, mean])
     return means
@@ -72,7 +72,7 @@ Versicolor é quase 3 vezes maior que a média do comprimento da pétala de Seto
 def dispersal_length(index=0):
     species = get_unique_column_values('Species')
     print(f"{species[index]}")
-    info = get_species_info(index)
+    info = get_data_by_specie(index)
     sepal = info['SepalLengthCm']
     petal = info['PetalLengthCm']
 
@@ -96,22 +96,24 @@ def dispersal_length(index=0):
     print('Indice de dispersão da correlação dos dados: ',
           dispersal_index.statistic)
     print(30*'-'+'\n')
-    min_value = min(petal.tolist())
-    max_value = max(petal.tolist())
+    min_value = petal.min()
+    max_value = petal.max()
     print(f"Valor mínimo: {min_value}, Valor máximo: {max_value}")
     sns.scatterplot(data=IRIS, x=sepal, y=petal)
     plt.show()
 
 
-def show_hist_boxsplot(min_value, max_value, index=0, boxsplot=False, petal=True):
+def show_hist_boxsplot(index=0, boxsplot=False, petal=True):
     species = get_unique_column_values('Species')
     print(f"{species[index]}")
-    info = get_species_info(index)
+    info = get_data_by_specie(index)
     petal_sepal = info['PetalLengthCm'] if petal else info['SepalLengthCm']
     bin_value = math.ceil(
         math.log2(len(petal_sepal)) + 1)
+    min_value = math.ceil(petal_sepal.min())
+    max_value = math.ceil(petal_sepal.max())
     if boxsplot:
-        plt.boxplot(petal_sepal)
+        sns.boxplot(petal_sepal)
     else:
         plt.hist(petal_sepal, (bin_value), (min_value, max_value))
     plt.show()
@@ -144,19 +146,37 @@ def show_column_info(database: pd.DataFrame, colum_names: list[str]):
         outliers = list(
             database[column][(column_value < inf) | (column_value > sup)])
 
-        print(f"Média {column}: {mean:.2f}")
-        print(f"Moda {column}: {mode}")
-        print(f"Mediana {column}: {median}")
-        print(f"Desvio padrão {column}: {deviation:.2f}")
-        print(f"Amplitude interquartil {column}: {
-              quartiles[2] - quartiles[0]:.2f}")
-        print(f"{column} outliers ({len(outliers)}): {outliers}")
+        print(f"Coluna {column}")
+        print(f"Média: {mean:.2f} cm")
+        print(f"Moda: {mode} cm")
+        print(f"Mediana: {median} cm")
+        print(f"Desvio padrão: {deviation:.2f} cm")
+        print(f"Amplitude interquartil: {
+              quartiles[2] - quartiles[0]:.2f} cm")
+        print(f"outliers ({len(outliers)}): {outliers} cm")
         print("-" * 40)
-        bin_value = math.ceil(
-            math.log2(len(database[column])) + 1)
-        sns.histplot(database[column], bins=bin_value, ax=graficos[0][i])
+        print("\n")
+        # bin_value = math.ceil(
+        #     math.log2(len(database[column])) + 1)
+        # sns.histplot(database[column], bins=bin_value, ax=graficos[0][i])
+        sns.boxplot(database[column], ax=graficos[0][i], orient='x')
     plt.show()
 
 
-show_column_info(IRIS, ["SepalLengthCm", "SepalWidthCm",
-                 "PetalLengthCm", "PetalWidthCm"])
+setosa_data = get_data_by_specie(0)
+versicolor_data = get_data_by_specie(1)
+virginica_data = get_data_by_specie(2)
+# Dados da Iris-Setosa
+# show_column_info(
+#     setosa_data, ["SepalLengthCm", "SepalWidthCm",
+#                   "PetalLengthCm", "PetalWidthCm"])
+
+# Dados da Iris-Versicolor
+# show_column_info(
+#     versicolor_data, ["SepalLengthCm", "SepalWidthCm",
+#                   "PetalLengthCm", "PetalWidthCm"])
+
+# Dados da Iris-Virginica
+show_column_info(
+    virginica_data, ["SepalLengthCm", "SepalWidthCm",
+                  "PetalLengthCm", "PetalWidthCm"])

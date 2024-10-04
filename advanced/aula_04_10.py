@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.stats as stats
-
+from aula_04_10_data import only_breast, only_formula, both
 LIMIT = 0.05
 
 sync1 = np.array([94, 84.9, 82.6, 69.5, 80.1, 79.6, 81.4, 77.8, 81.7, 78.8, 73.2, 87.9, 87.9, 93.5, 82.3, 79.3, 78.3, 71.6, 88.6, 74.6, 74.1, 80.6]) # 22
@@ -43,19 +43,35 @@ asyncr1 = np.array([77.1, 71.7, 91, 72.2, 74.8, 85.1, 67.6, 69.9, 75.3, 71.7, 65
 # Pega as 2 médias e compara
 # Compara se as médias são iguais
 
-ttest, p_value_ttest = stats.ttest_ind(sync1, asyncr1)
-print("p value: ", p_value_ttest)
-print("Desde que a hipotese for de um lado >> use p_value / 2 >> p_value")
+# ttest, p_value_ttest = stats.ttest_ind(sync1, asyncr1)
+# print("p value: ", p_value_ttest)
+# print("Desde que a hipotese for de um lado >> use p_value / 2 >> p_value")
 
-if p_value_ttest / 2 < LIMIT:
-    print("rejeitar h0: ", p_value_ttest)
-else:
-    print("não rejeitar h0: ", p_value_ttest)
+# if p_value_ttest / 2 < LIMIT:
+#     print("rejeitar h0: ", p_value_ttest)
+# else:
+#     print("não rejeitar h0: ", p_value_ttest)
 
 # Médias das populações são diferentes porque o p_value é menor que 0.05, rejeitamos a hipotese nula e assumimos a hipotese alternativa
 # Além de o estudo da média sync1 é maior que o asyncr1 
 
 
 # 2 tipos de testes:
-# - One sided -> usar p_value
-# - Two sided -> usar p_value / 2 -> pois two sided são duplicados
+# - One sided -> usar p_value / 2 -> pois o limite não se divide para os dois lados, e sim fica normal, ex: 0.05 ficara em um lado só em vez de 2,5 e 2,5.
+# - Two sided -> usar p_value 
+    
+
+#################################################
+mean_breast = np.mean(only_breast)
+mean_formula = np.mean(only_formula)
+mean_both = np.mean(both)
+
+# _, p_value_oneway = stats.f_oneway(only_breast, only_formula, both)
+# if p_value_oneway < LIMIT:
+#     print("rejeitar h0: ", p_value_oneway)
+# else:
+#   print("não rejeitar h0: ", p_value_oneway)
+
+print("formula media: ", only_breast)
+print("formula media: ", only_formula)
+print("formula media: ", both)
